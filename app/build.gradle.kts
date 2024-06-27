@@ -81,10 +81,10 @@ dependencies {
 
     implementation(libs.paging.runtime.ktx)
 
-    implementation("com.github.bumptech.glide:glide:4.13.2")
-    kapt("com.github.bumptech.glide:compiler:4.13.2")
+    implementation(libs.glide)
+    kapt(libs.glide.compiler)
 
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation(libs.work.runtime.ktx)
 
 }
 
