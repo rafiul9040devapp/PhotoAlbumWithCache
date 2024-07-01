@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface PhotoRepository {
     suspend fun getAllPhotosFromRepo(): Flow<ApiState<List<ResponsePhotoItem>>>
+
+    suspend fun refreshPhotos()
 }

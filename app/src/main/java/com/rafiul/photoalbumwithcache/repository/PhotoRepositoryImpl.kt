@@ -20,7 +20,7 @@ class PhotoRepositoryImpl @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getAllPhotosFromRepo(): Flow<ApiState<List<ResponsePhotoItem>>> {
-        val cachedPhotosFlow = fetchFromLocal(photoDao.getPhotosBetween30And60(), PhotoMapper::fromEntityList)
+        val cachedPhotosFlow = fetchFromLocal(photoDao.getAllPhotos(), PhotoMapper::fromEntityList)
         return cachedPhotosFlow.transformLatest { cacheState ->
             if (cacheState !is ApiState.Success || cacheState.data.isEmpty()){
                 safeApiCall {
@@ -36,5 +36,16 @@ class PhotoRepositoryImpl @Inject constructor(
                 emit(cacheState)
             }
         }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun refreshPhotos() {
+        safeApiCall {
+            photoApi.getAllPhotosFromApi()
+        }.collect{ apiState->
+            if (apiState is ApiState.Success){
+                photoDao.clearAll()
+                photoDao.insertAll(PhotoMapper.toEntityList(apiState.data))
+            }
+        }
     }
 }
