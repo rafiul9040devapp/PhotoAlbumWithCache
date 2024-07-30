@@ -16,7 +16,5 @@ class ServiceModule {
 
     @Singleton
     @Provides
-    fun providesPhotoApi(retrofit: Retrofit.Builder): PhotoApi {
-        return retrofit.build().create(PhotoApi::class.java)
-    }
+    fun providesPhotoApi(retrofit: Retrofit.Builder): PhotoApi = retrofit.build().create(PhotoApi::class.java)
 }
