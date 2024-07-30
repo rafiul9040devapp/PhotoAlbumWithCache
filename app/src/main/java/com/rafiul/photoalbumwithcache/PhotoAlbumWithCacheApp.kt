@@ -10,7 +10,6 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class PhotoAlbumWithCacheApp : Application(),Configuration.Provider {
-
     @Inject
     lateinit var delegatingWorkerFactory: DelegatingWorkerFactory
 

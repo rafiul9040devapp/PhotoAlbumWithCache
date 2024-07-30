@@ -23,10 +23,6 @@ class PhotoAdapter :
                     placeholder(R.drawable.placeholder)
                     error(R.drawable.errorplaceholder)
                 }
-
-//                Glide.with(itemView.context)
-//                    .load(photoItem.url)
-//                    .into(imageView)
             }
         }
     }

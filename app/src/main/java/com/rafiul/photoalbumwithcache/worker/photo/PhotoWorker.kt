@@ -9,6 +9,7 @@ import com.rafiul.photoalbumwithcache.repository.PhotoRepository
 import com.rafiul.photoalbumwithcache.utils.NotificationHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import java.io.IOException
 import java.net.UnknownHostException
 
 
@@ -30,7 +31,7 @@ class PhotoWorker @AssistedInject constructor(
             showProgressNotification()
             Result.success()
         } catch (e: Exception) {
-            if (e is UnknownHostException) {
+            if (e is UnknownHostException || e is IOException) {
                 Log.d(TAG, "Retry...")
                 Result.retry()
             } else {

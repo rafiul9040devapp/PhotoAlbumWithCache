@@ -1,5 +1,6 @@
 package com.rafiul.photoalbumwithcache.base
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,15 +29,19 @@ abstract class BaseRepository {
                 emit(ApiState.Failure(IOException(errorMessage)))
             }
         } catch (e: Exception) {
-            if (e is UnknownHostException){
+            if (e is UnknownHostException || e is IOException) {
                 emit(ApiState.Failure(e))
-            }else{
+            } else {
                 e.printStackTrace()
                 emit(ApiState.Failure(e))
             }
         }
     }.retry(3) { throwable ->
-        throwable is UnknownHostException || throwable is IOException
+        (throwable is UnknownHostException || throwable is IOException).also { shouldRetry ->
+            if (shouldRetry) {
+                Log.d("RetryStatus", "Retrying due to network issue: ${throwable.message}")
+            }
+        }
     }.flowOn(Dispatchers.IO)
 
 }
