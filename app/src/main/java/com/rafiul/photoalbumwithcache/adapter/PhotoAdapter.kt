@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.bumptech.glide.Glide
+import com.rafiul.photoalbumwithcache.R
 import com.rafiul.photoalbumwithcache.databinding.ItemPhotoViewholderBinding
 import com.rafiul.photoalbumwithcache.model.response.ResponsePhotoItem
 
@@ -17,9 +19,14 @@ class PhotoAdapter :
         fun bind(photoItem: ResponsePhotoItem) {
             with(binding) {
                 title.text = photoItem.title
-                Glide.with(itemView.context)
-                    .load(photoItem.url)
-                    .into(imageView)
+                imageView.load(photoItem.url) {
+                    placeholder(R.drawable.placeholder)
+                    error(R.drawable.errorplaceholder)
+                }
+
+//                Glide.with(itemView.context)
+//                    .load(photoItem.url)
+//                    .into(imageView)
             }
         }
     }
@@ -49,6 +56,4 @@ class PhotoDiffCallBack : DiffUtil.ItemCallback<ResponsePhotoItem>() {
     ): Boolean {
         return oldItem == newItem
     }
-
-
 }

@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,6 +66,7 @@ dependencies {
 
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -85,9 +87,9 @@ dependencies {
     implementation(libs.glide)
     kapt(libs.glide.compiler)
 
-    implementation (libs.spinKit)
-
     implementation(libs.work.runtime.ktx)
+
+    implementation("io.coil-kt:coil:2.1.0")
 
 }
 

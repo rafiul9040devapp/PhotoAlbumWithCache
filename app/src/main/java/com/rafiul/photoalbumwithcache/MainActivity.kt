@@ -10,6 +10,9 @@ import com.rafiul.photoalbumwithcache.adapter.PhotoAdapter
 import com.rafiul.photoalbumwithcache.base.ApiState
 import com.rafiul.photoalbumwithcache.databinding.ActivityMainBinding
 import com.rafiul.photoalbumwithcache.ui.PhotoViewModel
+import com.rafiul.photoalbumwithcache.utils.handleWorkInfoState
+import com.rafiul.photoalbumwithcache.worker.viewmodel.OneTimeWorkerViewModel
+import com.rafiul.photoalbumwithcache.worker.viewmodel.PeriodicWorkerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -17,6 +20,8 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<PhotoViewModel>()
+    private val oneTimeWorkerViewModel by viewModels<OneTimeWorkerViewModel>()
+    private val periodicWorkerViewModel by viewModels<PeriodicWorkerViewModel>()
     private lateinit var photoAdapter: PhotoAdapter
 
 
@@ -24,9 +29,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        observePeriodicWorker()
         setupRecyclerView()
         observePhotos()
+    }
+
+    private fun observePeriodicWorker() {
+        periodicWorkerViewModel.photoWorkStatus.observe(this) { workInfo ->
+            workInfo?.let {
+                handleWorkInfoState(workInfo,"CustomWorkerForPhoto")
+            }
+        }
     }
 
     private fun setupRecyclerView() {
